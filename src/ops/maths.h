@@ -47,6 +47,8 @@ extern const tele_op_t op_N;
 extern const tele_op_t op_V;
 extern const tele_op_t op_VV;
 extern const tele_op_t op_ER;
+extern const tele_op_t op_NR;
+extern const tele_op_t op_KY;
 extern const tele_op_t op_BPM;
 extern const tele_op_t op_BIT_OR;
 extern const tele_op_t op_BIT_AND;

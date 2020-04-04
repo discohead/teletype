@@ -409,6 +409,22 @@ uint8_t screen_refresh_edit() {
         }
         else if (script == INIT_SCRIPT)
             prefix = 'I';
+        else if (script == TT_SCRIPT_A) {
+            prefix = 'A';
+	    muted = true;
+	}
+	else if (script == TT_SCRIPT_B) {
+            prefix = 'B';
+	    muted = true;
+	}
+        else if (script == TT_SCRIPT_C) {
+            prefix = 'C';
+	    muted = true;
+	}
+        else if (script == TT_SCRIPT_D) {
+            prefix = 'D';
+	    muted = true;
+	}
         else if (script <= TT_SCRIPT_8)
             muted = ss_get_mute(&scene_state, script);
 

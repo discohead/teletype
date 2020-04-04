@@ -202,6 +202,8 @@
         "V"           => { MATCH_OP(E_OP_V); };
         "VV"          => { MATCH_OP(E_OP_VV); };
         "ER"          => { MATCH_OP(E_OP_ER); };
+        "NR"          => { MATCH_OP(E_OP_NR); };
+        "KY"          => { MATCH_OP(E_OP_KY); };
         "BPM"         => { MATCH_OP(E_OP_BPM);; };
         "|"           => { MATCH_OP(E_OP_BIT_OR);; };
         "&"           => { MATCH_OP(E_OP_BIT_AND);; };

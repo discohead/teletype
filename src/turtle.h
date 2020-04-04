@@ -41,6 +41,10 @@ typedef enum {
     TT_SCRIPT_8,
     METRO_SCRIPT,
     INIT_SCRIPT,
+    TT_SCRIPT_A,
+    TT_SCRIPT_B,
+    TT_SCRIPT_C,
+    TT_SCRIPT_D,
     TEMP_SCRIPT
 } script_number_t;
 

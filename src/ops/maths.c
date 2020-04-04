@@ -92,6 +92,10 @@ static void op_VV_get(const void *data, scene_state_t *ss, exec_state_t *es,
                       command_state_t *cs);
 static void op_ER_get(const void *data, scene_state_t *ss, exec_state_t *es,
                       command_state_t *cs);
+static void op_NR_get(const void *data, scene_state_t *ss, exec_state_t *es,
+                      command_state_t *cs);
+static void op_KY_get(const void *data, scene_state_t *ss, exec_state_t *es,
+                      command_state_t *cs);
 static void op_BPM_get(const void *data, scene_state_t *ss, exec_state_t *es,
                        command_state_t *cs);
 static void op_BIT_OR_get(const void *data, scene_state_t *ss, exec_state_t *es,
@@ -168,6 +172,8 @@ const tele_op_t op_N     = MAKE_GET_OP(N       , op_N_get       , 1, true);
 const tele_op_t op_V     = MAKE_GET_OP(V       , op_V_get       , 1, true);
 const tele_op_t op_VV    = MAKE_GET_OP(VV      , op_VV_get      , 1, true);
 const tele_op_t op_ER    = MAKE_GET_OP(ER      , op_ER_get      , 3, true);
+const tele_op_t op_NR    = MAKE_GET_OP(NR      , op_NR_get      , 2, true);
+const tele_op_t op_KY    = MAKE_GET_OP(KY      , op_KY_get      , 3, true);
 const tele_op_t op_BPM   = MAKE_GET_OP(BPM     , op_BPM_get     , 1, true);
 const tele_op_t op_BIT_OR  = MAKE_GET_OP(|, op_BIT_OR_get  , 2, true);
 const tele_op_t op_BIT_AND = MAKE_GET_OP(&, op_BIT_AND_get, 2, true);
@@ -648,6 +654,42 @@ static void op_ER_get(const void *NOTUSED(data), scene_state_t *NOTUSED(ss),
     int16_t len = cs_pop(cs);
     int16_t step = cs_pop(cs);
     cs_push(cs, euclidean(fill, len, step));
+}
+
+static void op_NR_get(const void *NOTUSED(data), scene_state_t *NOTUSED(ss),
+                     exec_state_t *NOTUSED(es), command_state_t *cs) {
+    int16_t pattern = cs_pop(cs) % 32;
+    int16_t step = cs_pop(cs) % 16;
+    if (pattern < 0) {
+        pattern = 32 + pattern;
+    }
+    if (step < 0) {
+        step = 16 + step;
+    }
+    cs_push(cs, table_nr[pattern][step]);
+}
+
+static void op_KY_get(const void *NOTUSED(data), scene_state_t *NOTUSED(ss),
+                     exec_state_t *NOTUSED(es), command_state_t *cs) {
+    int16_t scale = cs_pop(cs) % 13;
+    if (scale < 0) {
+        scale = 13 + scale;
+    }
+    int16_t root = cs_pop(cs);
+    int16_t degree = cs_pop(cs) % 7;
+    if (degree < 0) {
+        degree = 7 + degree;
+    }
+    int16_t transpose = table_ky[scale][degree];
+    if (root < 0) {
+        if (root < -127) root = -127;
+        root = -root;
+        cs_push(cs, -table_n[root + transpose]);
+    }
+    else {
+        if (root > 127) root = 127;
+        cs_push(cs, table_n[root + transpose]);
+    }
 }
 
 static void op_BPM_get(const void *NOTUSED(data), scene_state_t *NOTUSED(ss),

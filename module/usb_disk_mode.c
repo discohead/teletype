@@ -121,7 +121,7 @@ void tele_usb_disk() {
             }
 
             char input[36];
-            for (int s = 0; s < 10; s++) {
+            for (int s = 0; s < 14; s++) {
                 file_putc('\n');
                 file_putc('\n');
                 file_putc('#');
@@ -129,6 +129,14 @@ void tele_usb_disk() {
                     file_putc('M');
                 else if (s == 9)
                     file_putc('I');
+                else if (s == 10)
+                    file_putc('A');
+                else if (s == 11)
+                    file_putc('B');
+                else if (s == 12)
+                    file_putc('C');
+                else if (s == 13)
+                    file_putc('D');
                 else
                     file_putc(s + 49);
 
@@ -261,11 +269,19 @@ void tele_usb_disk() {
                                     s = 8;
                                 else if (c == 'I')
                                     s = 9;
-                                else if (c == 'P')
+                                else if (c == 'A')
                                     s = 10;
+                                else if (c == 'B')
+                                    s = 11;
+                                else if (c == 'C')
+                                    s = 12;
+                                else if (c == 'D')
+                                    s = 13;
+				else if (c == 'P')
+                                    s = 14;
                                 else if (c == 'G') {
                                     grid_state = grid_num = grid_count = 0;
-                                    s = 11;
+                                    s = 15;
                                 }
                                 else {
                                     s = c - 49;
@@ -298,7 +314,7 @@ void tele_usb_disk() {
                             }
                         }
                         // SCRIPTS
-                        else if (s >= 0 && s <= 9) {
+                        else if (s >= 0 && s <= 13) {
                             if (c == '\n') {
                                 if (p && l < SCRIPT_MAX_COMMANDS) {
                                     tele_command_t temp;
@@ -342,7 +358,7 @@ void tele_usb_disk() {
                         }
                         // PATTERNS
                         // tele_patterns[]. l wrap start end v[64]
-                        else if (s == 10) {
+                        else if (s == 14) {
                             if (c == '\n' || c == '\t') {
                                 if (b < 4) {
                                     if (l > 3) {
@@ -375,7 +391,8 @@ void tele_usb_disk() {
 
                                 if (c == '\n') {
                                     if (p) l++;
-                                    if (l > 68) s = -1;
+				    // ATTE: 64 + 4?????
+                                    if (l > PATTERN_LENGTH) s = -1;
                                     b = 0;
                                     p = 0;
                                 }
@@ -392,7 +409,7 @@ void tele_usb_disk() {
                             }
                         }
                         // GRID
-                        else if (s == 11) {
+                        else if (s == 15) {
                             grid_usb_read(&scene, c);
                         }
                     }
